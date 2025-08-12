@@ -1,19 +1,18 @@
 package otus.homework.coroutines
 
-import android.content.Context
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.launchimport otus.homework.coroutines.utils.CrashMonitor
-import java.net.SocketTimeoutException
+
+
 
 class CatsPresenter(
     private val catsService: CatsService,
     private val catsImagesService: CatsImageService,
-    private val presenterScope = CoroutineScope(Dispatchers.Main + CoroutineName("CatsCoroutine"))
+    private val presenterScope: CoroutineScope = CoroutineScope(Dispatchers.Main + CoroutineName("CatsCoroutine"))
 ) {
 
     private var _catsView: ICatsView? = null
@@ -23,14 +22,14 @@ class CatsPresenter(
         try {
         job = presenterScope.launch {
               val fact = async { catsService.getCatFact() }.await()
-              val image = async { catsImageService.getCatImage() }.await()
-              _catsView?.populate(catFact, catImage)
+              val catImages:List<CatImage> = async { catsImagesService.getCatImage() }.await()
+              _catsView?.populate(fact, catImages.first())
             }
         } catch (ex: Exception) {
                 if (ex is java.net.SocketTimeoutException) {
                     _catsView?.onError("Unable to get response from server")
                 }
-                CrashMonitor.trackWarning(ex.message!!)
+                CrashMonitor.trackWarning()
                  }
     }
 
@@ -39,7 +38,7 @@ class CatsPresenter(
     }
         
 
-    fun attachView(catsView: ICatsView) {
+     fun attachView(catsView: ICatsView) {
         _catsView = catsView
     }
 

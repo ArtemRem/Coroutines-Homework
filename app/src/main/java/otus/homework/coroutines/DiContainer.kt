@@ -2,6 +2,7 @@ package otus.homework.coroutines
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.getValue
 
 class DiContainer {
 
@@ -12,7 +13,7 @@ class DiContainer {
             .build()
     }
 
-    val catsService by lazy { catsFactRetrofit.create(CatsFactService::class.java) }
+    val catsService by lazy { catsFactRetrofit.create(CatsService::class.java) }
 
     private val catsImageRetrofit by lazy {
         Retrofit.Builder()
