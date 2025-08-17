@@ -2,6 +2,8 @@ package otus.homework.coroutines
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -15,22 +17,34 @@ class CatsView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), ICatsView {
 
-    var presenter: CatsPresenter? = null
+//    var presenter: CatsPresenter? = null
 
-    override fun populate(fact: Fact, image: CatImage) {
-        findViewById<TextView>(R.id.fact_textView).text = fact.fact
-        Picasso.get().load(image.url).into(findViewById<ImageView>(R.id.catImageView));
+    override fun populate(cat: Cat) {
+        findViewById<TextView>(R.id.fact_textView).text = cat.fact
+        Picasso.get().load(cat.imageUrl).into(findViewById<ImageView>(R.id.catImageView));
     }
 
     override fun onError(text: String) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
+
+    fun showErrorToast(errorMsg: String) {
+        Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+    }
+
+    fun setOnButtonClick(onButtonClick: () -> Unit) {
+        findViewById<Button>(R.id.button).setOnClickListener {
+            Log.d("TAG", "Button clicked")
+            onButtonClick()
+        }
+    }
+
 }
 
     public interface ICatsView {
 
-        fun populate(fact: Fact, image: CatImage)
+        fun populate(cat: Cat)
 
-        fun onError(text: String)
+        fun onError(errorMsg: String)
     }
 
