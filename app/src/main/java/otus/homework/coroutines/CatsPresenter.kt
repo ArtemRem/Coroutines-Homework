@@ -19,18 +19,21 @@
 //    private var job: Job? = null
 //
 //    fun onInitComplete() {
+//    job = presenterScope.launch {
 //        try {
-//        job = presenterScope.launch {
 //              val fact = async { catsService.getCatFact() }.await()
 //              val catImages:List<CatImage> = async { catsImagesService.getCatImage() }.await()
 //              _catsView?.populate(fact, catImages.first())
-//            }
+//
 //        } catch (ex: Exception) {
 //                if (ex is java.net.SocketTimeoutException) {
 //                    _catsView?.onError("Unable to get response from server")
 //                }
+//                if (ex is CancellationException) throw ex
+//
 //                CrashMonitor.trackWarning("Error")
 //                 }
+//    }
 //    }
 //
 //    fun onStop() {
