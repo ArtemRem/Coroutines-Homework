@@ -2,6 +2,6 @@ package otus.homework.coroutines
 
 
 sealed class Result {
-    data class Success(val catData: Cat) : Result()
+    data class Success<out T>(val catData: T) : Result()
     data class Error(val throwable: Throwable) : Result()
 }

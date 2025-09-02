@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         val catObserver = Observer <Result> { catResult ->
             when(catResult) {
                 is Result.Error -> view.showErrorToast(catResult.throwable.message.toString())
-                is Result.Success -> view.populate(catResult.catData)
+                is Result.Success<*> -> view.populate(catResult.catData as Cat)
 
 
             }

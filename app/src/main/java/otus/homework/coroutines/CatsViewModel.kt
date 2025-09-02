@@ -21,9 +21,7 @@ class CatsViewModel(
 
     private val exceptionHandler = CoroutineExceptionHandler { _, e ->
         CrashMonitor.trackWarning("${e.message}")
-        _uiState.value = Result.Error(
-            Throwable()
-        )
+        _uiState.value = Result.Error( e )
     }
 
     val uiState: LiveData<Result>
